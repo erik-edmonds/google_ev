@@ -1,0 +1,42 @@
+<!-- [START maps_marker_simple] -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Markers</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}" />
+    <!-- <script src="{{url_for('static', filename='index.js')}}"></script> -->
+    <script>
+    function initMap() {
+      bounds  = new google.maps.LatLngBounds();
+      
+      const myLatLng = { lat: {{center_latitude}}, lng: {{center_longitude}} };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 10,
+        center: myLatLng,
+      });
+      
+      {% for latitude, longitude in data %}
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng({{ latitude }}, {{ longitude }}),
+          map: map
+        });
+      loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+      bounds.extend(loc);
+      {% endfor %}
+      map.fitBounds(bounds);
+      map.panToBounds(bounds);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTqUjLYgC2LLDCa8XJD793t4lB8jCPIOw&callback=initMap&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
+<!-- [END maps_marker_simple] -->

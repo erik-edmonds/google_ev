@@ -1,0 +1,75 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+	<style>
+		body { background: #e8f1f9; }
+	</style>
+	
+{% endblock %}
+
+
+{% block title %}
+EV Chargers
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+      <h1 class="pt-5 pb-2">EV Charging Map</h1>
+
+      <p class="lead">This is the index page for the EV mapping. Enter a zip code to see nearby chargers.</p>
+
+      {{ wtf.quick_form(form) }}
+
+
+    </div>
+  </div>
+</div>
+<span></span>
+<div class="container">
+  <div class="row">
+     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+      <p class="lead">Or get current location.</p>
+      <button onclick="getLocation()"></button>
+      <p id="print"></p>
+     </div>
+  </div>
+</div>
+<script>
+    var x = document.getElementById("print");
+    
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+    
+    function showPosition(position) {
+      x.innerHTML = "Latitude: " + position.coords.latitude + 
+      "<br>Longitude: " + position.coords.longitude;
+    }
+</script>
+
+{% endblock %}
+
+<!--
+	TIPS about using Flask-Bootstrap:
+	Flask-Bootstrap keeps the default Bootstrap stylesheet in the
+	env/lib/python3.8/site-packages/flask_bootstrap/static/css/ directory.
+	You can replace the CSS file. HOWEVER, when you reinstall requirements
+	for your project, you would overwrite all the Bootstrap files
+	with the defaults.
+	Flask-Bootstrap templates are in
+	env/lib/python3.8/site-packages/flask_bootstrap/static/templates
+	Modifying the Bootstrap base.html template: use directives and
+	Jinja2's super() function. See Jinja2 documentation and also this:
+	https://pythonhosted.org/Flask-Bootstrap/basic-usage.html
+-->
